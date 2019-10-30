@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es2015",
+    "moduleResolution": "node",
+    "lib": ["es2015", "es2015.promise", "es2016", "dom"],
+    "noImplicitAny": false,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "allowJs": true,
+    "checkJs": true,
+    "sourceMap": true,
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "paths": {
+      "*": [
+          "node_modules/*",
+          "src/types/*"
+      ]
+    }
+  },
+  "include": [
+      "src/**/*"
+  ],
+  "exclude":["node_modules", "dist"]
+}

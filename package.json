@@ -1,0 +1,41 @@
+{
+  "name": "@seniverse/api",
+  "version": "1.0.0",
+  "description": "Api sdk for seniverse",
+  "main": "index.js",
+  "scripts": {
+    "lint": "tslint --project .",
+    "build": "echo Using TypeScript && tsc --version && tsc -p ./tsconfig.pro.json --pretty"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@git.seniverse.com:lab/seniverse-api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/cache-manager": "^1.2.6",
+    "@types/chai": "^4.1.7",
+    "@types/hapi__joi": "^15.0.2",
+    "@types/log4js": "^2.3.5",
+    "@types/moment-timezone": "^0.5.12",
+    "@types/node": "^10.12.7",
+    "@types/request": "^2.48.1",
+    "@types/request-promise": "^4.1.42",
+    "@types/uuid": "^3.4.4",
+    "ts-node": "^7.0.1",
+    "tslint": "^5.11.0",
+    "typescript": "^3.1.6"
+  },
+  "dependencies": {
+    "@hapi/joi": "^15.1.0",
+    "@types/object-merge": "^2.5.0",
+    "cache-manager": "^2.9.0",
+    "log4js": "^3.0.6",
+    "moment": "^2.22.2",
+    "moment-timezone": "^0.5.25",
+    "object-merge": "^2.5.1",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.2"
+  }
+}
