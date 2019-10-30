@@ -15,7 +15,7 @@ interface Logger {
 
 interface Cache {
   max?: number
-  ttl?: number
+  ttl?: number | string
   enabled: boolean
 }
 

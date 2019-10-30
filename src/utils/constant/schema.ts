@@ -15,6 +15,11 @@ const BaseConfigSchema: Joi.SchemaMap = {
       enabled: Joi.boolean().required().only(true)
     }),
     Joi.object({
+      max: Joi.number().required(),
+      ttl: Joi.string().required().only('auto'),
+      enabled: Joi.boolean().required().only(true)
+    }),
+    Joi.object({
       max: Joi.number().optional(),
       ttl: Joi.number().optional(), /*seconds*/
       enabled: Joi.boolean().required().only(false)

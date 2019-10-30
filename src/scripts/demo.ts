@@ -9,7 +9,7 @@ const test = async () => {
     encryption: false,
     cache: {
       max: 1000,
-      ttl: 1000,
+      ttl: 'auto',
       enabled: true
     }
   })

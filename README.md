@@ -10,7 +10,14 @@ const seniverseV3 = new SeniverseV3({
   key: '', // 私钥
   ttl: '', // 签名失效时间
   language: '', // 结果返回语言
-  location: '' // 地点
+  location: '', // 地点,
+  // 内存缓存
+  cache: {
+    ttl: 100, // 缓存时间，单位为秒
+    max: 1000, // 缓存数据条数
+    enabled: true // 是否开启缓存
+  },
+  encryption: true // 是否进行签名验证
 })
 
 const data = await seniverseV3.weather.daily.data({ days: 2, start: -1, location: 'beijing' })
@@ -24,16 +31,30 @@ const data = await seniverseV3.ocean.grid.hourly.data({ location: '30:109' })
 ### 创建实例
 
 ```javascript
-// 公钥、私钥: 文档 https://docs.seniverse.com/api/start/key.html
-// ttl: 用于请求加密。文档：https://docs.seniverse.com/api/start/validation.html
-// language: 结果返回语言，具体调用时可通过传入的参数更改。文档：https://docs.seniverse.com/api/start/language.html
-// location: 请求地点，具体调用时可通过传入的参数更改。文档：https://docs.seniverse.com/api/start/common.html
+/*
+ * uid/key 公钥、私钥: 文档 https://docs.seniverse.com/api/start/key.html
+ * ttl: 用于请求加密。文档：https://docs.seniverse.com/api/start/validation.html
+ * language: 结果返回语言，具体调用时可通过传入的参数更改。文档：https://docs.seniverse.com/api/start/language.html
+ * location: 请求地点，具体调用时可通过传入的参数更改。文档：https://docs.seniverse.com/api/start/common.html
+ * cache: 内存缓存
+ *  cache.ttl: 缓存时间，可以指定某数字，例如 300 秒，则所有 API 请求结果都会缓存 300 秒；或传入 'auto'，则会根据不同 API 的更新时间，自动设定缓存时间
+ *  cache.max: 缓存条数，超出后，旧缓存将会被覆盖
+ *  cache.enabled: 是否开启缓存
+ * encryption： 是否进行签名验证。若为 false，则直接通过 key 进行 API 调用。文档：https://docs.seniverse.com/api/start/validation.html
+ */
 const seniverseV3 = new SeniverseV3({
   uid: '', // 公钥
   key: '', // 私钥
   ttl: '', // 签名失效时间
   language: '', // 结果返回语言
-  location: '' // 地点
+  location: '', // 地点
+  // 内存缓存
+  cache: {
+    ttl: 100, // 缓存时间，单位为秒
+    max: 1000, // 缓存数据条数
+    enabled: true // 是否开启缓存
+  },
+  encryption: true // 是否进行签名验证
 })
 ```
 
@@ -76,6 +97,10 @@ await seniverseV3.life.chineseCalendar.data({
 ### 数据返回
 
 所有接口均以数组形式返回数据。相较于[原始 API 文档](https://docs.seniverse.com/)，返回的结果已经从`results`字段中抽出，并将具体数据封装进`data`（数组）字段，消除了原有 API 返回结果格式不统一的问题
+
+## Demo
+
+[使用样例](./src/scripts/demo.ts)
 
 ## TODO
 

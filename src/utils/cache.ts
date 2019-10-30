@@ -1,18 +1,21 @@
 
 import * as cacheManager from 'cache-manager'
 import logger from './logger'
+import config from '../config'
 
-const cacheConfig = {
+const DEFAULT_TTL = config.seniverse.config.cache.ttl as number
+
+const cacheConfig: cacheManager.StoreConfig = {
   store: 'memory',
-  max: 3000,
-  ttl: 300
+  max: config.seniverse.config.cache.max,
+  ttl: DEFAULT_TTL
 }
 
 let cache: cacheManager.Cache
 
 export const initCache = (config: {
   max?: number
-  ttl?: number
+  ttl?: number | string
   enabled: boolean
 } = { enabled: false }) => {
   const { enabled, ...others } = config
@@ -39,14 +42,11 @@ const getCacheKey = (args: any[]) => {
 
 export const wrapFn = (
   fn: (...args: any[]) => any,
-  options: {
-    prefix?: string
-    ttl?: number
-  } = {}
+  options: { prefix?: string }
 ) => {
-  const { prefix = 'cache', ttl = cacheConfig.ttl } = options
+  const { prefix = 'cache' } = options
   const finallyOptions = {
-    ttl
+    ttl: cacheConfig.ttl as string | number
   }
 
   return (option: { ttl?: number, cacheKey?: string } = {}) => (...args: any[]) => {
@@ -58,12 +58,13 @@ export const wrapFn = (
     const tmpKey = option.cacheKey || getCacheKey(args)
     const fnCacheKey = `${prefix}-${fn.name}${tmpKey ? `-${tmpKey}` : ''}`
 
-    if (option.ttl) finallyOptions.ttl = option.ttl
+    if (option.ttl && finallyOptions.ttl === 'auto') finallyOptions.ttl = option.ttl
+    if (finallyOptions.ttl === 'auto') finallyOptions.ttl = DEFAULT_TTL
 
     return cache.wrap(fnCacheKey, () => {
       hitCache = false
       return fn(...args)
-    }, finallyOptions).then((data) => {
+    }, finallyOptions as cacheManager.CachingConfig).then((data) => {
       if (hitCache) {
         logger.debug(`[FUNC-CACHE:GET][${fnCacheKey}] - ${finallyOptions.ttl}`)
       } else {
