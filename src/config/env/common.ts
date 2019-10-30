@@ -21,7 +21,5 @@ export default {
       timeouts: [3000, 5000, 7000],
       encryption: true
     }
-  },
-  cache: {
   }
 }

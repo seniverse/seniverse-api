@@ -8,7 +8,15 @@ const cacheConfig = {
   ttl: 300
 }
 
-const cache = cacheManager.caching(cacheConfig)
+let cache: cacheManager.Cache
+
+export const initCache = (config: {
+  max?: number
+  ttl?: number
+} = {}) => {
+  Object.assign(cacheConfig, config)
+  cache = cacheManager.caching(cacheConfig)
+}
 
 const getCacheKey = (args: any[]) => {
   let cacheKey = ''
@@ -25,32 +33,39 @@ const getCacheKey = (args: any[]) => {
   return cacheKey
 }
 
-function wrapFn(fn, prefix = 'cache', options = {}) {
+export const wrapFn = (
+  fn: (...args: any[]) => any,
+  options: {
+    prefix?: string
+    ttl?: number
+  } = {}
+) => {
+  const { prefix = 'cache', ttl = cacheConfig.ttl } = options
   const finallyOptions = {
-    ttl: options['ttl'] || cacheConfig.ttl
+    ttl
   }
 
-  return (ttl?: number) => (...args) => {
+  return (option: { ttl?: number, cacheKey?: string } = {}) => (...args: any[]) => {
+    if (!cache) {
+      return fn(...args)
+    }
+
     let hitCache = true
-    const tmpKey = getCacheKey(args)
-    const cacheKey = `${prefix}-${fn.name}${tmpKey ? `-${tmpKey}` : ''}`
+    const tmpKey = option.cacheKey || getCacheKey(args)
+    const fnCacheKey = `${prefix}-${fn.name}${tmpKey ? `-${tmpKey}` : ''}`
 
-    if (ttl) finallyOptions.ttl = ttl
+    if (option.ttl) finallyOptions.ttl = option.ttl
 
-    return cache.wrap(cacheKey, () => {
+    return cache.wrap(fnCacheKey, () => {
       hitCache = false
       return fn(...args)
     }, finallyOptions).then((data) => {
       if (hitCache) {
-        logger.info(`[FUNC-CACHE:GET][${cacheKey}] - ${finallyOptions.ttl}`)
+        logger.debug(`[FUNC-CACHE:GET][${fnCacheKey}] - ${finallyOptions.ttl}`)
       } else {
-        logger.info(`[FUNC-CACHE:SET][${cacheKey}] - ${finallyOptions.ttl}`)
+        logger.debug(`[FUNC-CACHE:SET][${fnCacheKey}] - ${finallyOptions.ttl}`)
       }
       return data
     })
   }
-}
-
-export default {
-  wrapFn
 }

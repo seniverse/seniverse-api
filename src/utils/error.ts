@@ -16,7 +16,7 @@ class TpError extends Error {
 }
 
 export const ERRORS = {
-  SystemError: ['SYSTEM_ERROR'],
+  ConfigError: ['CONFIG_ERROR'],
   // service
   RetryTimeoutError: ['RETRY_TIMEOUT'],
   RetryError: ['RETRY_ERROR'],

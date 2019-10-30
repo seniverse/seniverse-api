@@ -14,6 +14,8 @@ interface Logger {
 }
 
 interface Cache {
+  max: number
+  ttl: number
 }
 
 export interface SeniverseConfig {

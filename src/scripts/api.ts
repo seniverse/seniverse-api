@@ -6,8 +6,16 @@ const test = async () => {
     uid: '',
     key: '',
     ttl: 10000,
-    encryption: false
+    encryption: false,
+    cache: {
+      max: 1000,
+      ttl: 1000
+    }
   })
+  await seniverseV3.weather.daily.data({ days: 2, start: -1, location: 'beijing' })
+  await seniverseV3.weather.now.data({ days: 2, start: -1, location: 'beijing' })
+  await seniverseV3.air.daily.data({ days: 2, start: -1, location: 'beijing' })
+
   await seniverseV3.weather.daily.data({ days: 2, start: -1, location: 'beijing' })
   await seniverseV3.weather.now.data({ days: 2, start: -1, location: 'beijing' })
   await seniverseV3.air.daily.data({ days: 2, start: -1, location: 'beijing' })
