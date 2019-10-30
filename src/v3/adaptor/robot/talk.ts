@@ -14,3 +14,5 @@ export const compat = (data: {
     session: result.session
   }]
 }))
+
+export const TTL = 100 * 60

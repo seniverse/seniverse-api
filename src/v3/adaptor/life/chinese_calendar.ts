@@ -8,3 +8,5 @@ export const compat = (data: {
     data: data.results.chinese_calendar
   }
 ]
+
+export const TTL = 60 * 60

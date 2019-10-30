@@ -3,7 +3,6 @@ import * as merge from 'object-merge'
 import config from '../config'
 import { AttributeMissing } from '../utils/meta'
 import { SeniverseConfig } from '../utils/types/base'
-import { CACHE_TTL } from '../utils/constant/data'
 import logger from '../utils/logger'
 import serviceUtils from '../utils/service'
 import { stringConvertToLowercase } from './utils'
@@ -35,7 +34,6 @@ class SeniverseV3 extends AttributeMissing {
       data: async (qs: any) => {
         const pathes = target.pathes.map((path: string) => stringConvertToLowercase('_')(path))
         const cacheKey = pathes.join('.')
-        const cacheTtl = CACHE_TTL[this.version.toUpperCase()][cacheKey] || 100
 
         const { uid, ttl, key, encryption, timeouts, ...baseQs } = this.options
         const url = `${config.seniverse.url}/${this.version}/${pathes.join('/')}.json`
@@ -46,8 +44,12 @@ class SeniverseV3 extends AttributeMissing {
           method: 'GET',
           qs: Object.assign({}, qs, baseQs)
         }
+
+        const adaptorKey = Symbol.for(`${ADAPTOR_PREFIX}.${cacheKey}`)
+        const adaptor = ADAPTORS.get(adaptorKey) || {}
+
         const fetch = fetchData({
-          ttl: cacheTtl,
+          ttl: adaptor.TTL || 100,
           cacheKey: `${cacheKey}.${JSON.stringify(Object.assign({}, options.qs, {
             uid, ttl, key
           }))}`
@@ -59,12 +61,9 @@ class SeniverseV3 extends AttributeMissing {
           key,
           encryption
         }, timeouts)
-
-        const adaptorKey = Symbol.for(`${ADAPTOR_PREFIX}.${cacheKey}`)
-        if (!ADAPTORS.has(adaptorKey)) return result
+        if (!adaptor.compat) return result
 
         try {
-          const adaptor = ADAPTORS.get(adaptorKey)
           return adaptor.compat(result)
         } catch (e) {
           logger.error(e)

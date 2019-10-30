@@ -13,8 +13,12 @@ let cache: cacheManager.Cache
 export const initCache = (config: {
   max?: number
   ttl?: number
-} = {}) => {
-  Object.assign(cacheConfig, config)
+  enabled: boolean
+} = { enabled: false }) => {
+  const { enabled, ...others } = config
+  if (!enabled) return
+
+  Object.assign(cacheConfig, others)
   cache = cacheManager.caching(cacheConfig)
 }
 

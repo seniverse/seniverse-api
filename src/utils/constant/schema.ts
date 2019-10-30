@@ -6,12 +6,20 @@ const BaseConfigSchema: Joi.SchemaMap = {
   uid: Joi.string().optional().allow(''),
   ttl: Joi.number().optional().allow(0),
   language: Joi.string().optional().allow(''),
-  timeouts: Joi.array().items(Joi.number()).optional(),
+  timeouts: Joi.array().items(Joi.number()).required(),
   encryption: Joi.boolean().optional(),
-  cache: Joi.object({
-    max: Joi.number(),
-    ttl: Joi.number() /*seconds*/
-  }).optional()
+  cache: Joi.alternatives(
+    Joi.object({
+      max: Joi.number().required(),
+      ttl: Joi.number().required(), /*seconds*/
+      enabled: Joi.boolean().required().only(true)
+    }),
+    Joi.object({
+      max: Joi.number().optional(),
+      ttl: Joi.number().optional(), /*seconds*/
+      enabled: Joi.boolean().required().only(false)
+    }),
+  )
 }
 
 export const SeniverseConfigSchema = Joi.alternatives(

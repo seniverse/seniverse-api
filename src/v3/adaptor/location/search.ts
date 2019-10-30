@@ -4,3 +4,5 @@ export const compat = (data: {
 }) => data.results.map(result => ({
   location: result,
 }))
+
+export const TTL = 100 * 60

@@ -10,3 +10,5 @@ export const compat = (data: {
   data: result.daily,
   last_update: result.last_update
 }))
+
+export const TTL = 60 * 60

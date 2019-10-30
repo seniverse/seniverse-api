@@ -9,7 +9,8 @@ const test = async () => {
     encryption: false,
     cache: {
       max: 1000,
-      ttl: 1000
+      ttl: 1000,
+      enabled: true
     }
   })
   let result: any
@@ -28,9 +29,16 @@ const test = async () => {
   console.log(JSON.stringify(result))
   console.log('\n')
 
+  result = await seniverseV3.life.chineseCalendar.data({ days: 2, start: -1 })
+  console.log('\n============= result =============')
+  console.log(JSON.stringify(result))
+  console.log('\n')
+
   await seniverseV3.weather.daily.data({ days: 2, start: -1, location: 'beijing' })
   await seniverseV3.weather.now.data({ days: 2, start: -1, location: 'beijing' })
   await seniverseV3.air.daily.data({ days: 2, start: -1, location: 'beijing' })
+  await seniverseV3.life.chineseCalendar.data({ days: 2, start: -1 })
+
   process.exit(0)
 }
 

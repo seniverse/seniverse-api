@@ -10,3 +10,5 @@ export const compat = (data: {
     aqi: result.aqi
   }]
 }))
+
+export const TTL = 60 * 60

@@ -8,3 +8,5 @@ export const compat = (data: {
   location: result.location,
   data: result.sun
 }))
+
+export const TTL = 60 * 60

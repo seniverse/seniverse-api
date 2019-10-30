@@ -84,7 +84,6 @@ export const shadowImport = (folder: string, options: {
 
       try {
         const filename = name.split('.').slice(0, -1).join('.')
-        logger.debug(`prefix: ${prefix}, filepath: ${filepath}`)
         let Module = require(filepath)
 
         if (exportDefault) Module = Module.default

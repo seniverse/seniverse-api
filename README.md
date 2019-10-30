@@ -9,8 +9,6 @@ const seniverseV3 = new SeniverseV3({
   location: ''
 })
 
-/weather/daily => weatherDaily
-
 const data = await seniverseV3.weather.daily.data({ days: 2, start: -1, location: 'beijing' })
 const data = await seniverseV3.air.hourlyHistory.data({ scope: 'city', location: 'beijing' })
 const data = await seniverseV3.life.chineseCalendar.data({ days: 2, start: -1 })

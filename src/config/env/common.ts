@@ -19,7 +19,10 @@ export default {
       key: process.env.SENIVERSE_KEY,
       ttl: process.env.SENIVERSE_TTL,
       timeouts: [3000, 5000, 7000],
-      encryption: true
+      encryption: true,
+      cache: {
+        enabled: false
+      }
     }
   }
 }
