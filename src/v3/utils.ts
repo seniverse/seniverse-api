@@ -36,16 +36,19 @@ export const stringConvertToLowercase = (connection: string = '_') => (raw: stri
   return resultKey
 }
 
-const isExcluded = (regexps: RegExp[], target: string): boolean => {
+const isExcluded = (regexps: Array<RegExp|string>, filename: string, fullpath: string): boolean => {
   for (const regexp of regexps) {
-    if (regexp.test(target)) return true
+    if (regexp instanceof RegExp && regexp.test(filename)) {
+      return true
+    }
+    if (regexp === fullpath) return true
   }
   return false
 }
 
 export const shadowImport = (folder: string, options: {
   prefix: string
-  excludes: RegExp[]
+  excludes: Array<RegExp|string>
   nameFormatter?: (name: string, module: any) => string
   requiredExports: string[]
   exportDefault: boolean
@@ -62,7 +65,7 @@ export const shadowImport = (folder: string, options: {
 
   return fs.readdirSync(folder)
     .filter(
-      name => !isExcluded(excludes, name)
+      name => !isExcluded(excludes, name, path.resolve(folder, name))
     )
     .reduce((list, name) => {
       const filepath = path.resolve(folder, name)
@@ -81,14 +84,13 @@ export const shadowImport = (folder: string, options: {
 
       try {
         const filename = name.split('.').slice(0, -1).join('.')
+        logger.debug(`prefix: ${prefix}, filepath: ${filepath}`)
         let Module = require(filepath)
 
         if (exportDefault) Module = Module.default
-        if (requiredExports.length) {
-          for (const requiredExport of requiredExports) {
-            if (Module[requiredExport] === undefined) {
-              throw new Error(`Module.${requiredExport} missing for ${filepath}`)
-            }
+        for (const requiredExport of requiredExports) {
+          if (Module[requiredExport] === undefined) {
+            throw new Error(`Module.${requiredExport} missing for ${filepath}`)
           }
         }
         if (!Module) throw new Error(`Module missing for ${filepath}`)

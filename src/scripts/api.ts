@@ -12,9 +12,21 @@ const test = async () => {
       ttl: 1000
     }
   })
-  await seniverseV3.weather.daily.data({ days: 2, start: -1, location: 'beijing' })
-  await seniverseV3.weather.now.data({ days: 2, start: -1, location: 'beijing' })
-  await seniverseV3.air.daily.data({ days: 2, start: -1, location: 'beijing' })
+  let result: any
+  result = await seniverseV3.weather.daily.data({ days: 2, start: -1, location: 'beijing' })
+  console.log('\n============= result =============')
+  console.log(JSON.stringify(result))
+  console.log('\n')
+
+  result = await seniverseV3.weather.now.data({ days: 2, start: -1, location: 'beijing' })
+  console.log('\n============= result =============')
+  console.log(JSON.stringify(result))
+  console.log('\n')
+
+  result = await seniverseV3.air.daily.data({ days: 2, start: -1, location: 'beijing' })
+  console.log('\n============= result =============')
+  console.log(JSON.stringify(result))
+  console.log('\n')
 
   await seniverseV3.weather.daily.data({ days: 2, start: -1, location: 'beijing' })
   await seniverseV3.weather.now.data({ days: 2, start: -1, location: 'beijing' })

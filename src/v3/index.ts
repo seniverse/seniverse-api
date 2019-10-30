@@ -10,6 +10,10 @@ import { stringConvertToLowercase } from './utils'
 import { SeniverseConfigSchema } from '../utils/constant/schema'
 import TpError from '../utils/error'
 import { initCache, wrapFn } from '../utils/cache'
+import { ADAPTORS, ADAPTOR_PREFIX } from './adaptor'
+
+console.log(' ============================= ADAPTORS ============================= ')
+console.log(ADAPTORS)
 
 class SeniverseV3 extends AttributeMissing {
   version: string = 'v3'
@@ -57,8 +61,17 @@ class SeniverseV3 extends AttributeMissing {
           key,
           encryption
         }, timeouts)
-        console.log(JSON.stringify(result))
-        // TODO: add adaptor for result
+
+        const adaptorKey = Symbol.for(`${ADAPTOR_PREFIX}.${cacheKey}`)
+        if (!ADAPTORS.has(adaptorKey)) return result
+
+        try {
+          const adaptor = ADAPTORS.get(adaptorKey)
+          return adaptor.compat(result)
+        } catch (e) {
+          logger.error(e)
+          return result
+        }
       }
     }
 

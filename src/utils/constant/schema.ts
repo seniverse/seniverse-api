@@ -21,7 +21,7 @@ export const SeniverseConfigSchema = Joi.alternatives(
     ttl: Joi.number().required().not(0),
     encryption: Joi.boolean().required().only(true)
   }),
-  // use key call api
+  // use key to call api
   Joi.object(BaseConfigSchema).keys({
     encryption: Joi.boolean().required().only(false)
   })
