@@ -72,3 +72,13 @@ await seniverseV3.life.chineseCalendar.data({
 /v3/air/hourly_history.json => air.hourlyHistory
 /v3/life/chinese_calendar.json => life.chineseCalendar
 ```
+
+### 数据返回
+
+所有接口均以数组形式返回数据。相较于[原始 API 文档](https://docs.seniverse.com/)，返回的结果已经从`results`字段中抽出，并将具体数据封装进`data`（数组）字段，消除了原有 API 返回结果格式不统一的问题
+
+## TODO
+
+- 支持 JSONP
+- 支持传入 URL 调用
+- 支持直接返回原始数据
