@@ -102,7 +102,7 @@ export const shadowImport = (folder: string, options: {
             ? extend([...prefix.split('.'), filename], Module)
             : Module
         ])
-        logger.info(`Module ${filepath} load as ${key}`)
+        logger.debug(`Module ${filepath} load as ${key}`)
       } catch (e) {
         logger.error(e)
       } finally {

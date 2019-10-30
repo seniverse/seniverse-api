@@ -12,9 +12,6 @@ import TpError from '../utils/error'
 import { initCache, wrapFn } from '../utils/cache'
 import { ADAPTORS, ADAPTOR_PREFIX } from './adaptor'
 
-console.log(' ============================= ADAPTORS ============================= ')
-console.log(ADAPTORS)
-
 class SeniverseV3 extends AttributeMissing {
   version: string = 'v3'
   options: SeniverseConfig
@@ -42,7 +39,8 @@ class SeniverseV3 extends AttributeMissing {
 
         const { uid, ttl, key, encryption, timeouts, ...baseQs } = this.options
         const url = `${config.seniverse.url}/${this.version}/${pathes.join('/')}.json`
-        logger.info(`[url] ${url} - ${JSON.stringify(qs)}`)
+        logger.debug(`[url] ${url} - ${JSON.stringify(qs)}`)
+
         const options = {
           url,
           method: 'GET',

@@ -46,7 +46,7 @@ export default {
     if (!options.method) options.method = 'GET'
     options.qs = Object.assign({}, options.qs || {}, encrypt(encryptOptions))
 
-    logger.info(`[REQUEST] ${JSON.stringify(options)}`)
+    logger.debug(`[REQUEST] ${JSON.stringify(options)}`)
     return requestService(Object.assign({}, options, {
       json: true
     }), timeouts)
