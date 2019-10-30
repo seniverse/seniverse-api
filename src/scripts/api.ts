@@ -1,5 +1,5 @@
 
-import SeniverseV3 from '../v3'
+import { SeniverseV3 } from '../v3'
 
 const test = async () => {
   const seniverseV3: any = new SeniverseV3({

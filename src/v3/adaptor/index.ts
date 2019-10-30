@@ -14,6 +14,7 @@ export const ADAPTORS: Map<symbol, Adaptor> = shadowImport(
   {
     excludes: [
       /\.map$/,
+      /\.d.ts$/,
       path.resolve(__dirname, 'index.js')
     ],
     prefix: ADAPTOR_PREFIX,

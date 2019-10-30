@@ -11,7 +11,7 @@ import TpError from '../utils/error'
 import { initCache, wrapFn } from '../utils/cache'
 import { ADAPTORS, ADAPTOR_PREFIX } from './adaptor'
 
-class SeniverseV3 extends AttributeMissing {
+export class SeniverseV3 extends AttributeMissing {
   version: string = 'v3'
   options: SeniverseConfig
 
@@ -83,5 +83,3 @@ class SeniverseV3 extends AttributeMissing {
     return new Proxy(target, handler)[name]
   }
 }
-
-export default SeniverseV3
