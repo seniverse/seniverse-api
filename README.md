@@ -2,6 +2,11 @@
 
 > 心知天气 API Node.js（支持 Typescript）SDK
 
+[![npm version](https://badge.fury.io/js/seniverse-api.svg)](https://badge.fury.io/js/seniverse-api)  [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com) [![seniverse-api](http://img.shields.io/npm/dm/seniverse-api.svg)](https://www.npmjs.com/package/seniverse-api) ![Hex.pm](https://img.shields.io/hexpm/l/seniverse-api)
+
+[![NPM](https://nodei.co/npm/seniverse-api.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/seniverse-api)
+
+
 ## Usage
 
 ```bash
@@ -26,13 +31,34 @@ const seniverseV3 = new SeniverseV3({
     ttl: 100, // 缓存时间，单位为秒，可以为 'auto'
     max: 1000, // 缓存数据条数
     enabled: true // 是否开启缓存
-  }
+  },
+  returnRaw: false // 是否直接返回 API 原始数据
 })
 
-const data = await seniverseV3.weather.daily.data({ days: 2, start: -1, location: 'beijing' })
-const data = await seniverseV3.air.hourlyHistory.data({ scope: 'city', location: 'beijing' })
-const data = await seniverseV3.life.chineseCalendar.data({ days: 2, start: -1 })
-const data = await seniverseV3.ocean.grid.hourly.data({ location: '30:109' })
+await seniverseV3.weather.daily.data({ days: 2, start: -1, location: 'beijing' })
+await seniverseV3.air.hourlyHistory.data({ scope: 'city', location: 'beijing' })
+
+// 通过 API URL 调用
+await seniverseV3.request(
+  '/weather/daily',
+  { days: 2, start: -1, location: 'beijing' }
+)
+
+// 生成 jsonp 调用链接
+seniverseV3.jsonp(
+  '/weather/daily',
+  {
+    encryption: {
+      ttl: 1000,
+      uid: '',
+      key: '',
+    },
+    query: {
+      callback: 'weatherDaily',
+      location: 'beijing'
+    }
+  }
+)
 ```
 
 ## API
@@ -67,21 +93,21 @@ const seniverseV3 = new SeniverseV3({
 
 配置说明：
 
-- encryption: API 加密/验证配置
-  - uid: string, 公钥，文档 https://docs.seniverse.com/api/start/key.html
-  - key: string, 私钥，文档 https://docs.seniverse.com/api/start/key.html
-  - ttl: number, 加密过期时间，单位为秒，文档：https://docs.seniverse.com/api/start/validation.html
-  - enabled: boolean, 是否开启加密，默认为`true`
-- cache: 对请求结果进行内存缓存
-  - ttl: number | string, 缓存时间，单位为秒；或设置为`auto`，将会根据不同 API 设定不同缓存时间（根据 API 更新频率）
-  - max: number, 数据缓存量。超出将会覆盖旧缓存
-  - enabled: boolean, 是否开启缓存。如果对数据时效性要求很高，则不建议开启缓存。默认为`false`
-- query: 请求参数
-  - timeouts: number[], 调用 API 时重试次数以及 timeout 时间，单位为毫秒。默认为`[3000, 5000, 7000]`
-  - language: string, 结果返回语言，具体调用时可通过传入的参数更改。文档：https://docs.seniverse.com/api/start/language.html。默认为`zh-Hans`
-  - location: string, 请求地点，具体调用时可通过传入的参数更改。文档：https://docs.seniverse.com/api/start/common.html
-  - unit: string, 请求单位，具体调用时可通过传入的参数更改。文档：https://docs.seniverse.com/api/start/common.html。默认为`c`
-- returnRaw: boolean, 是否直接返回 API 原始数据。默认为`false`
+- `encryption`: API 加密/验证配置
+  - `uid`: string, 公钥，文档 https://docs.seniverse.com/api/start/key.html
+  - `key`: string, 私钥，文档 https://docs.seniverse.com/api/start/key.html
+  - `ttl`: number, 加密过期时间，单位为秒，文档：https://docs.seniverse.com/api/start/validation.html
+  - `enabled`: boolean, 是否开启加密，默认为`true`
+- `cache`: 对请求结果进行内存缓存
+  - `ttl`: number | string, 缓存时间，单位为秒；或设置为`auto`，将会根据不同 API 设定不同缓存时间（根据 API 更新频率）
+  - `max`: number, 数据缓存量。超出将会覆盖旧缓存
+  - `enabled`: boolean, 是否开启缓存。如果对数据时效性要求很高，则不建议开启缓存。默认为`false`
+- `query`: 请求参数
+  - `timeouts`: number[], 调用 API 时重试次数以及 timeout 时间，单位为毫秒。默认为`[3000, 5000, 7000]`
+  - `language`: string, 结果返回语言，具体调用时可通过传入的参数更改。文档：https://docs.seniverse.com/api/start/language.html 默认为`zh-Hans`
+  - `location`: string, 请求地点，具体调用时可通过传入的参数更改。文档：https://docs.seniverse.com/api/start/common.html
+  - `unit`: string, 请求单位，具体调用时可通过传入的参数更改。文档：https://docs.seniverse.com/api/start/common.html 默认为`c`
+- `returnRaw`: boolean, 是否直接返回 API 原始数据。默认为`false`
 
 ### API 调用
 
@@ -181,3 +207,7 @@ const url = seniverseV3.jsonp(
 ## Demo
 
 [使用样例](./src/scripts/demo.ts)
+
+## License
+
+[Apache License 2.0](./LICENSE)
