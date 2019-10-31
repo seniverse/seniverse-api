@@ -3,11 +3,11 @@ import crypto = require('crypto')
 import request, { RequestOptions } from './request'
 import logger from './logger'
 
-interface EncryptOptions {
-  uid: string
-  ttl: number
+export interface EncryptOptions {
+  uid?: string
+  ttl?: number
   key: string
-  encryption: boolean
+  enabled: boolean
 }
 
 const requestService = (
@@ -18,8 +18,8 @@ const requestService = (
   timeouts
 )
 
-const encrypt = (encryptOptions: EncryptOptions) => {
-  if (!encryptOptions.encryption) {
+export const encrypt = (encryptOptions: EncryptOptions) => {
+  if (!encryptOptions.enabled) {
     return {
       key: encryptOptions.key
     }

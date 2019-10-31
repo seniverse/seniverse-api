@@ -18,10 +18,10 @@ export const initCache = (config: {
   ttl?: number | string
   enabled: boolean
 } = { enabled: false }) => {
-  const { enabled, ...others } = config
+  const { enabled } = config
   if (!enabled) return
 
-  Object.assign(cacheConfig, others)
+  cacheConfig.max = config.max || cacheConfig.max
   cache = cacheManager.caching(cacheConfig)
 }
 
@@ -40,16 +40,21 @@ const getCacheKey = (args: any[]) => {
   return cacheKey
 }
 
+export interface CacheOptions {
+  ttl?: number
+  cacheKey?: string
+}
+
 export const wrapFn = (
   fn: (...args: any[]) => any,
   options: { prefix?: string }
 ) => {
   const { prefix = 'cache' } = options
   const finallyOptions = {
-    ttl: cacheConfig.ttl as string | number
+    ttl: cacheConfig.ttl
   }
 
-  return (option: { ttl?: number, cacheKey?: string } = {}) => (...args: any[]) => {
+  return (option: CacheOptions = {}) => (...args: any[]) => {
     if (!cache) {
       return fn(...args)
     }
@@ -58,8 +63,7 @@ export const wrapFn = (
     const tmpKey = option.cacheKey || getCacheKey(args)
     const fnCacheKey = `${prefix}-${fn.name}${tmpKey ? `-${tmpKey}` : ''}`
 
-    if (option.ttl && finallyOptions.ttl === 'auto') finallyOptions.ttl = option.ttl
-    if (finallyOptions.ttl === 'auto') finallyOptions.ttl = DEFAULT_TTL
+    if (option.ttl) finallyOptions.ttl = option.ttl
 
     return cache.wrap(fnCacheKey, () => {
       hitCache = false

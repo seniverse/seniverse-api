@@ -19,14 +19,23 @@ interface Cache {
   enabled: boolean
 }
 
+interface Encryption {
+  uid?: string // 公钥
+  key: string // 私钥
+  ttl?: number // 签名过期时间
+  enabled: boolean // 调用时是否进行签名验证
+}
+
 export interface SeniverseConfig {
-  uid?: string
-  key?: string
-  ttl?: number
-  timeouts?: number[]
-  language?: string
-  cache?: Cache
-  encryption?: boolean
+  encryption: Encryption
+  query?: {
+    timeouts?: number[]
+    language?: string
+    unit?: string
+    location?: string
+  }
+  cache?: Cache // 缓存配置
+  returnRaw?: boolean // 是否直接返回 API 原始数据
 }
 
 interface Seniverse {
