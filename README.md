@@ -4,8 +4,12 @@
 
 ## Usage
 
+```bash
+$ npm i seniverse-api --save
+```
+
 ```javascript
-import { SeniverseV3 } from '@seniverse/api'
+import { SeniverseV3 } from 'seniverse-api'
 
 const seniverseV3 = new SeniverseV3({
   encryption: {
@@ -36,7 +40,7 @@ const data = await seniverseV3.ocean.grid.hourly.data({ location: '30:109' })
 ### 创建实例
 
 ```javascript
-import { SeniverseV3 } from '@seniverse/api'
+import { SeniverseV3 } from 'seniverse-api'
 
 const seniverseV3 = new SeniverseV3({
   // 内存缓存
@@ -88,7 +92,7 @@ const seniverseV3 = new SeniverseV3({
 通过 SDK 获取 API 数据时，需要根据该 API 的具体 URL 来进行调用，例如:
 
 ```javascript
-import { SeniverseV3 } from '@seniverse/api'
+import { SeniverseV3 } from 'seniverse-api'
 
 const seniverseV3 = new SeniverseV3({ /* your config */ })
 
@@ -126,7 +130,7 @@ await seniverseV3.life.chineseCalendar.data({
 通过传入心知天气 API 的路由进行数据调用，更符合老用户的使用习惯
 
 ```javascript
-import { SeniverseV3 } from '@seniverse/api'
+import { SeniverseV3 } from 'seniverse-api'
 
 const seniverseV3 = new SeniverseV3({ /* your config */ })
 
@@ -148,7 +152,7 @@ await seniverseV3.request(
 使用 JSONP 方式调用：[说明文档](https://docs.seniverse.com/api/start/jsonp.html)
 
 ```javascript
-import { SeniverseV3 } from '@seniverse/api'
+import { SeniverseV3 } from 'seniverse-api'
 
 const seniverseV3 = new SeniverseV3({ /* your config */ })
 

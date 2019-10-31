@@ -1,5 +1,5 @@
 {
-  "name": "@seniverse/api",
+  "name": "seniverse-api",
   "version": "0.1.0",
   "description": "Api sdk for seniverse",
   "main": "dist/index.js",
