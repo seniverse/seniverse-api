@@ -214,8 +214,10 @@ seniverseV3.jsonp(
 
 ### 数据返回
 
-1. 如果没有设置`returnRaw: true`，则所有接口均以数组形式返回数据。相较于[原始 API 文档](https://docs.seniverse.com/)，返回的结果已经从`results`字段中抽出，并将具体数据封装进`data`（数组）字段，消除了原有 API 返回结果格式不统一的问题
-2. 如果设置`returnRaw: true`，则返回结果将不做处理，和 API 文档展示的结果一致
+通过初始化`SeniverseV3`时设置`returnRaw`来决定是否返回原始数据（即和 API 文档内相同的数据）
+
+1. 如果`returnRaw: false`，则所有接口均以数组形式返回数据。相较于[原始 API 文档](https://docs.seniverse.com/)，返回的结果已经从`results`字段中抽出，并将具体数据封装进`data`（数组）字段，消除了原有 API 返回结果格式不统一的问题
+2. 如果`returnRaw: true`，则返回结果将不做处理，和 API 文档展示的结果一致
 
 ## Demo
 

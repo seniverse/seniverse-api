@@ -22,13 +22,13 @@ interface JsonpOptions {
   }
   query: {
     callback: string
-    [key: string]: string
+    [key: string]: string | number
   }
 }
 
 interface RequestProxyTarget {
   pathes: string[]
-  data(qs: { [key: string]: string }): Promise<any>
+  data(qs: { [key: string]: string | number }): Promise<any>
   [key: string]: any
 }
 
@@ -39,7 +39,7 @@ interface RequestProxyHandler {
 interface SeniverseV3Interface {
   version: string
   options: SeniverseConfig
-  request(path: string, qs: { [key: string]: string }): Promise<any>
+  request(path: string, qs: { [key: string]: string | number }): Promise<any>
   jsonp(path: string, qs: JsonpOptions): string
   [key: string]: any
 }
@@ -58,13 +58,13 @@ export class SeniverseV3 extends AttributeMissing implements SeniverseV3Interfac
     if (check.error) throw new TpError.ConfigError(check.error)
     initCache(this.options.cache)
 
-    const request = (options: any, encryption: any, timeouts?: number[]) =>
+    const request = (options: RequestOptions, encryption: EncryptOptions, timeouts?: number[]) =>
       serviceUtils.request(options, encryption, timeouts)
 
     this.fetchData = wrapFn(request, { prefix: this.version })
   }
 
-  async request(path: string, qs: any) {
+  async request(path: string, qs: { [key: string]: string | number }) {
     const result = await this._request(path.split('/').filter(p => p), qs)
     return result
   }
@@ -85,7 +85,7 @@ export class SeniverseV3 extends AttributeMissing implements SeniverseV3Interfac
     return `${config.seniverse.url}/${this.version}/${path.split('/').filter(p => p).join('/')}.json?${queryString}`
   }
 
-  private async _request(pathes: string[], qs: { [key: string]: string }) {
+  private async _request(pathes: string[], qs: { [key: string]: string | number }) {
     const cacheKey = pathes.join('.')
 
     const { encryption, query, cache, returnRaw } = this.options
@@ -124,7 +124,7 @@ export class SeniverseV3 extends AttributeMissing implements SeniverseV3Interfac
   protected attributeMissing(name: string) {
     const target: RequestProxyTarget = {
       pathes: [],
-      data: async (qs: { [key: string]: string }) => {
+      data: async (qs: { [key: string]: string | number }) => {
         const pathes = target.pathes.map((path: string) => stringConvertToLowercase('_')(path))
         const result = await this._request(pathes, qs)
         return result
