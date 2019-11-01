@@ -9,12 +9,13 @@
     "build": "echo Using TypeScript && tsc --version && tsc -p ./tsconfig.pro.json --pretty",
     "prepublish": "in-publish && safe-publish-latest && npm run build || not-in-publish"
   },
+  "homepage": "https://github.com/seniverse/seniverse-api",
   "repository": {
     "type": "git",
-    "url": "git@git.seniverse.com:lab/seniverse-api.git"
+    "url": "git@github.com:seniverse/seniverse-api.git"
   },
   "author": "seniverse",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@types/cache-manager": "^1.2.6",
     "@types/chai": "^4.1.7",
