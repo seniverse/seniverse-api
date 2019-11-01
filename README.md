@@ -1,6 +1,6 @@
 # Seniverse-API
 
-> 心知天气 API Node.js（支持 Typescript）SDK [Language--EN](./README-EN.md)
+> 心知天气 API Node.js（支持 Typescript）SDK [【Language--EN】](./README-EN.md)
 
 [![npm version](https://badge.fury.io/js/seniverse-api.svg)](https://badge.fury.io/js/seniverse-api)  [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com) [![seniverse-api](http://img.shields.io/npm/dm/seniverse-api.svg)](https://www.npmjs.com/package/seniverse-api) ![GitHub](https://img.shields.io/github/license/seniverse/seniverse-api)
 
