@@ -2,7 +2,7 @@
 
 > 心知天气 API Node.js（支持 Typescript）SDK
 
-[![npm version](https://badge.fury.io/js/seniverse-api.svg)](https://badge.fury.io/js/seniverse-api)  [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com) [![seniverse-api](http://img.shields.io/npm/dm/seniverse-api.svg)](https://www.npmjs.com/package/seniverse-api) ![Hex.pm](https://img.shields.io/hexpm/l/seniverse-api)
+[![npm version](https://badge.fury.io/js/seniverse-api.svg)](https://badge.fury.io/js/seniverse-api)  [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com) [![seniverse-api](http://img.shields.io/npm/dm/seniverse-api.svg)](https://www.npmjs.com/package/seniverse-api) ![GitHub](https://img.shields.io/github/license/seniverse/seniverse-api)
 
 [![NPM](https://nodei.co/npm/seniverse-api.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/seniverse-api)
 
