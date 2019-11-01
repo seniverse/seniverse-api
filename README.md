@@ -24,7 +24,9 @@ const seniverseV3 = new SeniverseV3({
     enabled: false // 是否进行签名验证
   },
   query: {
+    unit: 'c', // 单位
     language: '', // 结果返回语言
+    timeouts: [3000, 3000] // 重试次数和超时时间
   },
   // 内存缓存
   cache: {
@@ -193,6 +195,17 @@ const url = seniverseV3.jsonp(
     },
     query: {
       callback: 'weatherDaily', // 回调函数名
+      location: 'beijing' // 请求参数
+    }
+  }
+)
+
+seniverseV3.jsonp(
+  '/air/hourly',
+  {
+    // 如果 ttl, uid, key 都已在初始化时传递，则 encryption 字段可不传
+    query: {
+      callback: 'airHourly', // 回调函数名
       location: 'beijing' // 请求参数
     }
   }

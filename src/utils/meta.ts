@@ -31,14 +31,14 @@ export class AttributeMissing {
     return new Proxy(this, handler)
   }
 
-  _handleMissingAttribute(target, name) {
+  private _handleMissingAttribute(target: object, name: string) {
     if (Reflect.has(target, name)) {
       return Reflect.get(target, name)
     }
     return this.attributeMissing(name)
   }
 
-  attributeMissing(name) {
+  protected attributeMissing(name: string) {
     throw new Error(`Attribute ${name} is missing!`)
   }
 }

@@ -14,11 +14,42 @@ import { RequestOptions } from '../utils/request'
 
 const DEFAULT_TTL = config.seniverse.config.cache.ttl as number
 
-export class SeniverseV3 extends AttributeMissing {
+interface JsonpOptions {
+  encryption?: {
+    ttl?: number
+    uid?: string
+    key?: string
+  }
+  query: {
+    callback: string
+    [key: string]: string
+  }
+}
+
+interface RequestProxyTarget {
+  pathes: string[]
+  data(qs: { [key: string]: string }): Promise<any>
+  [key: string]: any
+}
+
+interface RequestProxyHandler {
+  get(target: RequestProxyTarget, property: string, receiver: RequestProxyHandler): RequestProxyHandler
+}
+
+interface SeniverseV3Interface {
+  version: string
+  options: SeniverseConfig
+  request(path: string, qs: { [key: string]: string }): Promise<any>
+  jsonp(path: string, qs: JsonpOptions): string
+  [key: string]: any
+}
+
+export class SeniverseV3 extends AttributeMissing implements SeniverseV3Interface {
   version: string = 'v3'
   options: SeniverseConfig
-  fetchData: (cacheOptions: CacheOptions) =>
+  private fetchData: (cacheOptions: CacheOptions) =>
     (options: RequestOptions, encryptOptions: EncryptOptions, timeouts: number[]) => Promise<any>
+  [key: string]: any
 
   constructor(options: SeniverseConfig) {
     super()
@@ -38,17 +69,7 @@ export class SeniverseV3 extends AttributeMissing {
     return result
   }
 
-  jsonp(path: string, qs: {
-    encryption?: {
-      ttl?: number
-      uid?: string
-      key?: string
-    }
-    query: {
-      callback: string
-      [key: string]: string
-    }
-  }) {
+  jsonp(path: string, qs: JsonpOptions) {
     const { encryption = {} } = qs
     const encryptOptions: EncryptOptions = Object.assign({}, this.options.encryption, {
       ...encryption,
@@ -64,7 +85,7 @@ export class SeniverseV3 extends AttributeMissing {
     return `${config.seniverse.url}/${this.version}/${path.split('/').filter(p => p).join('/')}.json?${queryString}`
   }
 
-  private async _request(pathes: string[], qs: any) {
+  private async _request(pathes: string[], qs: { [key: string]: string }) {
     const cacheKey = pathes.join('.')
 
     const { encryption, query, cache, returnRaw } = this.options
@@ -100,24 +121,25 @@ export class SeniverseV3 extends AttributeMissing {
     }
   }
 
-  attributeMissing(name: string) {
-    const target = {
+  protected attributeMissing(name: string) {
+    const target: RequestProxyTarget = {
       pathes: [],
-      data: async (qs: any) => {
+      data: async (qs: { [key: string]: string }) => {
         const pathes = target.pathes.map((path: string) => stringConvertToLowercase('_')(path))
         const result = await this._request(pathes, qs)
         return result
       }
     }
 
-    const handler = {
-      get: function(target: any, property: string, receiver: any) {
+    const handler: RequestProxyHandler = {
+      get: function(target: RequestProxyTarget, property: string, receiver: RequestProxyHandler) {
         if (target[property]) return target[property]
         target.pathes.push(property)
         return receiver
       }
     }
 
-    return new Proxy(target, handler)[name]
+    const proxy: RequestProxyTarget = new Proxy(target, handler)
+    return proxy[name]
   }
 }

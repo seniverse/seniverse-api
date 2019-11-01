@@ -2,7 +2,7 @@
 import { SeniverseV3 } from '../v3'
 
 const test = async () => {
-  const seniverseV3: any = new SeniverseV3({
+  const seniverseV3 = new SeniverseV3({
     encryption: {
       uid: '',
       // add your api key
